@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Porteiro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Controle de Porteiro</h1>
+        <form id="visitorForm">
+            <label for="name">Nome do Visitante:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="document">Documento (CPF):</label>
+            <input type="text" id="document" name="document" required>
+
+            <label for="reason">Motivo da Visita:</label>
+            <textarea id="reason" name="reason" rows="3" required></textarea>
+
+            <label for="entry-time">Horário de Entrada:</label>
+            <input type="time" id="entry-time" name="entry-time" required>
+
+            <label for="exit-time">Horário de Saída:</label>
+            <input type="time" id="exit-time" name="exit-time" required>
+
+            <button type="button" onclick="handleForm()">Registrar</button>
+        </form>
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        function validateCPF(cpf) {
+            cpf = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
+                return false;
+            }
+
+            let sum, rest;
+            for (let i = 1; i <= 9; i++) {
+                sum = (sum || 0) + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            }
+            rest = (sum * 10) % 11;
+            if (rest === 10 || rest === 11) rest = 0;
+            if (rest !== parseInt(cpf.substring(9, 10))) return false;
+
+            sum = 0;
+            for (let i = 1; i <= 10; i++) {
+                sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            }
+            rest = (sum * 10) % 11;
+            if (rest === 10 || rest === 11) rest = 0;
+            return rest === parseInt(cpf.substring(10, 11));
+        }
+
+        function calculateTime(entryTime, exitTime) {
+            const [entryHours, entryMinutes] = entryTime.split(':').map(Number);
+            const [exitHours, exitMinutes] = exitTime.split(':').map(Number);
+
+            const entryDate = new Date(0, 0, 0, entryHours, entryMinutes);
+            const exitDate = new Date(0, 0, 0, exitHours, exitMinutes);
+
+            let diff = (exitDate - entryDate) / (1000 * 60); // diferença em minutos
+            if (diff < 0) {
+                diff += 24 * 60; // ajusta se a saída for após a meia-noite
+            }
+
+            const hours = Math.floor(diff / 60);
+            const minutes = diff % 60;
+
+            return `${hours} hora(s) e ${minutes} minuto(s)`;
+        }
+
+        function handleForm() {
+            const cpf = document.getElementById('document').value;
+            const entryTime = document.getElementById('entry-time').value;
+            const exitTime = document.getElementById('exit-time').value;
+
+            if (!validateCPF(cpf)) {
+                alert('CPF inválido! Por favor, insira um CPF válido.');
+                return;
+            }
+
+            if (entryTime && exitTime) {
+                const timeSpent = calculateTime(entryTime, exitTime);
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').textContent = 
+                    `Tempo no local: ${timeSpent}. CPF válido!`;
+            } else {
+                alert('Por favor, preencha os horários de entrada e saída.');
+            }
+        }
+    </script>
+</body>
+</html>
