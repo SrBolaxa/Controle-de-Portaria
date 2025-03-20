@@ -51,10 +51,10 @@
 
       <div id="informacoesAdicionais" style="display: none;">
         <label for="nome">Nome:</label>
-        <input type="text" id="nome" placeholder="Digite o nome" required>
+        <input type="text" id="nome" placeholder="Digite o nome">
 
         <label for="motivo">Motivo da entrada:</label>
-        <input type="text" id="motivo" placeholder="Digite o motivo da entrada" required>
+        <input type="text" id="motivo" placeholder="Digite o motivo da entrada">
       </div>
 
       <button type="submit">Registrar Entrada</button>
@@ -68,6 +68,7 @@
           <th>CPF</th>
           <th>Nome</th>
           <th>Motivo</th>
+          <th>Horário</th>
         </tr>
       </thead>
       <tbody>
@@ -80,7 +81,6 @@
     const tabelaRegistros = document.getElementById('tabelaRegistros').querySelector('tbody');
     const tipoSelect = document.getElementById('tipo');
     const informacoesAdicionais = document.getElementById('informacoesAdicionais');
-    const registros = [];
 
     // Mostrar ou ocultar campos adicionais
     tipoSelect.addEventListener('change', () => {
@@ -112,13 +112,11 @@
       }
 
       soma = 0;
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; 10 > i; i++) {
         soma += parseInt(cpf[i]) * (11 - i);
       }
       resto = (soma * 10) % 11;
-      if (resto === 10 || resto === 11) {
-        resto = 0;
-      }
+      if (10 === resto || 11 === resto) resto = 0;
       if (resto !== parseInt(cpf[10])) {
         return false;
       }
@@ -132,33 +130,28 @@
 
       const tipo = tipoSelect.value;
       const cpf = document.getElementById('cpf').value;
-      let horario = document.getElementById('horario').value;
-      const nome = document.getElementById('nome').value;
-      const motivo = document.getElementById('motivo').value;
+      let nome = document.getElementById('nome').value;
+      let motivo = document.getElementById('motivo').value;
+      const horario = new Date().toISOString();
 
       if (!validarCPF(cpf)) {
         alert('CPF inválido! Entrada não registrada.');
         return;
       }
 
-      if ((tipo === 'visitante' || tipo === 'prestador') && (!nome || !motivo)) {
-        alert('Por favor, preencha o nome e o motivo da entrada.');
-        return;
+      // Definir valores específicos para funcionário e morador
+      if (tipo === 'funcionario' || tipo === 'morador') {
+        nome = "Não é necessário essa informação";
+        motivo = "Não é necessário essa informação";
       }
 
-      if (!horario) {
-        horario = new Date().toISOString();
-      }
-
-      const registro = { tipo, cpf, nome, motivo, horario };
-      registros.push(registro);
-
+      // Registro na tabela
       const linha = document.createElement('tr');
       linha.innerHTML = `
         <td>${tipo}</td>
         <td>${cpf}</td>
-        <td>${nome || 'N/A'}</td>
-        <td>${motivo || 'N/A'}</td>
+        <td>${nome}</td>
+        <td>${motivo}</td>
         <td>${new Date(horario).toLocaleString()}</td>
       `;
       tabelaRegistros.appendChild(linha);
