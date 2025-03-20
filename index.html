@@ -32,6 +32,18 @@
     th {
       background-color: #f4f4f4;
     }
+    .btn-saida {
+      padding: 5px 10px;
+      font-size: 14px;
+      color: white;
+      background-color: red;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-saida:hover {
+      background-color: darkred;
+    }
   </style>
 </head>
 <body>
@@ -57,7 +69,7 @@
         <input type="text" id="motivo" placeholder="Digite o motivo da entrada">
       </div>
 
-      <button type="submit">Registrar Entrada</button>
+      <button id="btnEntrada" type="button">Registrar Entrada</button>
     </form>
 
     <h2>Registros:</h2>
@@ -68,7 +80,9 @@
           <th>CPF</th>
           <th>Nome</th>
           <th>Motivo</th>
-          <th>Horário</th>
+          <th>Horário de Entrada</th>
+          <th>Horário de Saída</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -81,6 +95,7 @@
     const tabelaRegistros = document.getElementById('tabelaRegistros').querySelector('tbody');
     const tipoSelect = document.getElementById('tipo');
     const informacoesAdicionais = document.getElementById('informacoesAdicionais');
+    const btnEntrada = document.getElementById('btnEntrada');
 
     // Mostrar ou ocultar campos adicionais
     tipoSelect.addEventListener('change', () => {
@@ -112,11 +127,13 @@
       }
 
       soma = 0;
-      for (let i = 0; 10 > i; i++) {
+      for (let i = 0; i < 10; i++) {
         soma += parseInt(cpf[i]) * (11 - i);
       }
       resto = (soma * 10) % 11;
-      if (10 === resto || 11 === resto) resto = 0;
+      if (resto === 10 || resto === 11) {
+        resto = 0;
+      }
       if (resto !== parseInt(cpf[10])) {
         return false;
       }
@@ -125,14 +142,12 @@
     }
 
     // Função para registrar a entrada
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
+    btnEntrada.addEventListener('click', () => {
       const tipo = tipoSelect.value;
       const cpf = document.getElementById('cpf').value;
       let nome = document.getElementById('nome').value;
       let motivo = document.getElementById('motivo').value;
-      const horario = new Date().toISOString();
+      const horarioEntrada = new Date().toISOString();
 
       if (!validarCPF(cpf)) {
         alert('CPF inválido! Entrada não registrada.');
@@ -145,21 +160,38 @@
         motivo = "Não é necessário essa informação";
       }
 
-      // Registro na tabela
       const linha = document.createElement('tr');
+      linha.setAttribute('data-cpf', cpf); // Identificar a linha pelo CPF
       linha.innerHTML = `
         <td>${tipo}</td>
         <td>${cpf}</td>
         <td>${nome}</td>
         <td>${motivo}</td>
-        <td>${new Date(horario).toLocaleString()}</td>
+        <td>${new Date(horarioEntrada).toLocaleString()}</td>
+        <td>---</td>
+        <td><button class="btn-saida" data-cpf="${cpf}">Registrar Saída</button></td>
       `;
       tabelaRegistros.appendChild(linha);
 
       alert('Entrada registrada com sucesso!');
       form.reset();
       informacoesAdicionais.style.display = 'none';
+
+      // Adicionar evento ao botão de saída
+      const btnSaida = linha.querySelector('.btn-saida');
+      btnSaida.addEventListener('click', () => registrarSaida(linha));
     });
+
+    // Função para registrar a saída
+    function registrarSaida(linha) {
+      const horarioSaida = new Date().toISOString();
+
+      // Atualizar o horário de saída na tabela
+      const colunaSaida = linha.querySelectorAll('td')[5];
+      colunaSaida.textContent = new Date(horarioSaida).toLocaleString();
+
+      alert('Saída registrada com sucesso!');
+    }
   </script>
 </body>
 </html>
