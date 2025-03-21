@@ -1,50 +1,131 @@
+/* Estilização geral do corpo */
 body {
-    font-family: Arial, sans-serif;
-    background-color: blue;
     margin: 0;
-    padding: 0;
+    background-color: rgb(42, 42, 42); /* Fundo escuro */
+    font-family: Arial, sans-serif; /* Fonte padrão */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Altura mínima */
+    color: white; /* Texto claro */
+  }
+  
+  /* Contêiner principal */
+/* Contêiner principal */
+/* Estilização da coluna esquerda (cadastro) */
+.coluna-esquerda {
+    flex: 1.2; /* Aumenta o tamanho da coluna da esquerda */
+    padding: 20px; /* Adiciona espaçamento interno */
+    border-right: 1px solid #ccc; /* Adiciona uma linha separadora */
+    background-color: rgb(60, 60, 60); /* Fundo cinza escuro */
+    border-radius: 8px; /* Bordas arredondadas */
+  }
+  
+  /* Estilização da coluna direita (tabela de registros) */
+  .coluna-direita {
+    flex: 1.8; /* Garante que a tabela tenha mais espaço proporcional */
+    padding: 20px; /* Adiciona espaçamento interno */
+    background-color: rgb(60, 60, 60); /* Fundo cinza escuro */
+    border-radius: 8px; /* Bordas arredondadas */
+    overflow: auto; /* Permite rolagem se o conteúdo exceder a altura */
+    max-height: 80vh; /* Limita a altura para não ultrapassar a janela */
+    transition: max-height 0.3s ease; /* Animação suave na expansão */
+  }
+  
+  /* Configuração para a tabela ocupar todo o espaço interno */
+  table {
+    width: 100%; /* A tabela ocupará a largura total */
+    border-collapse: collapse; /* Remove bordas duplicadas */
+  }
+  
+  th, td {
+    border: 1px solid #ddd; /* Bordas suaves */
+    padding: 10px; /* Espaçamento interno */
+    text-align: center; /* Centralizar o texto */
+  }
+  
+  thead {
+    background-color: #4a4a4a; /* Fundo do cabeçalho */
+    color: rgb(200, 0, 255); /* Texto vibrante */
+  }
+  
+  /* Estilo para responsividade */
+  .container {
+    display: flex; /* Layout flexível */
+    gap: 20px; /* Espaçamento entre as colunas */
+    align-items: flex-start; /* Alinha no topo */
+    flex-wrap: wrap; /* Permite o layout se ajustar em telas menores */
+  }
+  
+.caixa-direita {
+  flex: 2; /* Faz a caixa da tabela maior */
 }
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-h1 {
-    text-align: center;
-    color: #333;
-}
-label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: bold;
-}
-input, select, textarea {
-    width: 100%;
+
+  /* Tabela de registros */
+ 
+  
+  
+  /* Cabeçalho */
+  h1 {
+    color: rgb(200, 0, 255); /* Cor vibrante */
+    margin-bottom: 20px; /* Espaçamento inferior */
+  }
+  
+  /* Formulário */
+  form {
+    display: flex;
+    flex-direction: column; /* Itens em coluna */
+    gap: 15px; /* Espaço entre os campos */
+    margin-bottom: 30px; /* Espaço inferior do formulário */
+  }
+  
+  /* Rótulos */
+  label {
+    font-weight: bold; /* Destacar os rótulos */
+    color: white; /* Texto claro */
+    text-align: left; /* Alinhar à esquerda */
+  }
+  
+  /* Campos de entrada e seleção */
+  input, select, button {
     padding: 10px;
-    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-}
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
+    border-radius: 15px;
+    font-size: 16px; /* Tamanho da fonte */
+    background-color: #de9cff; /* Fundo claro */
+    color: black; /* Texto escuro */
+    width: 100%; /* Preenchimento total */
+    box-sizing: border-box; /* Incluir bordas no tamanho total */
+  }
+  
+  /* Botão */
+  button {
+    background-color: rgb(42, 42, 42); /* Fundo escuro */
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
-}
-button:hover {
-    background-color: #0056b3;
-}
-.result {
-    margin-top: 20px;
-    padding: 10px;
-    background: #f0f0f0;
-    border-radius: 4px;
-    text-align: center;
-    font-weight: bold;
-}
+    transition: background-color 0.5s ease; /* Transição para o hover */
+  }
+  
+  button:hover {
+    background-color: rgb(71, 0, 62); /* Fundo ao passar o mouse */
+  }
+  
+  
+  /* Botão de saída */
+  .btn-saida {
+    background-color:rgb(126, 0, 180); /* Cor do botão */
+    border: none; /* Remove bordas */
+    color: white; /* Cor do texto */
+    padding: 10px; /* Espaçamento interno */
+    border-radius: 50%; /* Torna o botão circular */
+    text-align: center; /* Centraliza o texto */
+    width: 50px; /* Define a largura */
+    height: 50px; /* Define a altura */
+    cursor: pointer; /* Define o cursor como pointer ao passar o mouse */
+  }
+  
+  .btn-saida:hover {
+    background-color: rgb(60, 0, 71); /* Cor ao passar o mouse */
+  }
+  
